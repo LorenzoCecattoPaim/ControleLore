@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Dashboard</h2>
+    <p>Bem-vindo!</p>
+
+    <div class="resumo">
+        <p>💰 Saldo: R$ {{ saldo }}</p>
+        <p>📈 Entradas: R$ {{ entradas }}</p>
+        <p>📉 Saídas: R$ {{ saidas }}</p>
+    </div>
+
+    <h3>Adicionar lançamento</h3>
+    <form method="post" action="/add">
+        <select name="tipo" required>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+        </select>
+
+        <input type="text" name="categoria" placeholder="Categoria" required>
+        <input type="number" name="valor" step="0.01" placeholder="Valor" required>
+
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h3>Lançamentos</h3>
+
+    <div class="lancamentos">
+        {% for l in lancamentos %}
+            <div class="lancamento {{ l.tipo }}">
+                <div class="lado-esquerdo">
+                    <span class="tipo">{{ l.tipo }}</span>
+                    <span class="categoria">{{ l.categoria }}</span>
+                </div>
+
+                <div class="valor">
+                    R$ {{ l.valor }}
+                </div>
+            </div>
+        {% else %}
+            <p>Nenhum lançamento ainda</p>
+        {% endfor %}
+    </div>
+
+
+    <a href="{{ url_for('logout') }}">Sair</a>
+</div>
+
+</body>
+</html>
